@@ -14,7 +14,9 @@ export class SoundManager {
   audioContext: AudioContext;
   soundList: Array<Sound> = [];
 
-  constructor() {
+  private static _instance: SoundManager;
+
+  private constructor() {
     // const AudioContext = (window?.AudioContext || window?.webkitAudioContext);
     this.audioContext = new AudioContext();
     const gainNode = this.audioContext.createGain();
@@ -26,6 +28,10 @@ export class SoundManager {
     audioFileList.forEach((value, index) => {
       this.audioLoad(index, value);
     });
+  }
+
+  public static get instance (): SoundManager {
+    return this._instance || (this._instance = new SoundManager());
   }
 
   getSoundById(id: number): Sound | undefined {
@@ -46,4 +52,4 @@ export class SoundManager {
   }
 }
 
-export const soundManager = new SoundManager();
+export default SoundManager.instance;
