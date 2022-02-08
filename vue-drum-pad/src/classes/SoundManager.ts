@@ -1,7 +1,4 @@
-interface Sound {
-  id: number;
-  buffer: AudioBuffer;
-}
+import Sound from "./Sound";
 
 const audioFileList = [
   require("@/assets/sound/kit/kick.wav"),
@@ -31,23 +28,22 @@ export class SoundManager {
     });
   }
 
-  getAudioBufferById(id: number): AudioBuffer | undefined {
-    return this?.soundList?.find?.((item) => item.id === id)?.buffer;
+  getSoundById(id: number): Sound | undefined {
+    return this?.soundList?.find?.((item) => item.id === id);
   }
 
   async audioLoad(id: number, src: string): Promise<void> {
     const buffer: ArrayBuffer = await (await fetch(src)).arrayBuffer();
 
-    this.soundList.push({
+    this.soundList.push(new Sound(
       id,
-      buffer: await this.audioContext.decodeAudioData(buffer),
-    });
+      await this.audioContext.decodeAudioData(buffer),
+    ));
   }
 
   audioPlay(id: number): void {
-    const source = this.audioContext.createBufferSource();
-    source.buffer = this.getAudioBufferById(id) || null;
-    source.connect(this.audioContext.destination);
-    source.start();
+    this.getSoundById(id)?.play(this.audioContext);
   }
 }
+
+export const soundManager = new SoundManager();
