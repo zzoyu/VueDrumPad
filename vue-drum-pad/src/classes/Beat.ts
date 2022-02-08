@@ -1,11 +1,13 @@
-class Beat {
-  notes: Array<boolean>;
+import Instrument from "./Instrument";
 
-  constructor(size: number) {
-    this.notes = Array<boolean>(size);
+export default class Beat {
+  instrument: Instrument;
+
+  constructor( instrument: Instrument) {
+    this.instrument = instrument;
   }
 
-  constructor(notes: Array<boolean>) {
-    this.notes = notes;
+  play(){
+    this.instrument.soundHandler();
   }
 }

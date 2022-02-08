@@ -15,7 +15,7 @@ export default createStore({
     measures: 4, // 마디 수
     rows: 10, // 악기 수
     state: AppState.Idle, // 현재 상태
-    stage: new Stage(),
+    stage: new Stage(rows, 4*4),
     // soundManager: new SoundManager(),
     keyboardManager: new KeyboardManager(),
   },

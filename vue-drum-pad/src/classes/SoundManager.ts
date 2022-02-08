@@ -1,3 +1,5 @@
+// 싱글톤 사운드 제어 클래스.
+
 import Sound from "./Sound";
 
 const audioFileList = [
