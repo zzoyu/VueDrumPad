@@ -1,19 +1,24 @@
-import { soundManager, audioFileList } from "./SoundManager";
+import SoundManager from "./SoundManager";
 import Instrument from "./Instrument";
 
-class Stage {
+export default class Stage {
 
     instrumentList: Array<Instrument> = []
-    
 
     constructor () {
-        for (audioFile in audioFileList) {
+        SoundManager.soundList.forEach((_, index)=> {
             this.instrumentList.push(
-                new Instrument(()=>{
-                    soundManager.audioPlay()
-                }, 0)
-            );
-        }
-        
+                new Instrument(() =>{
+                    SoundManager.audioPlay(index)
+                }, index)
+            )
+        })
+
+    }
+
+    play () {
+        this.instrumentList.forEach((value) =>{
+            value.soundHandler();
+        })
     }
 }

@@ -1,6 +1,7 @@
 import { createStore } from "vuex";
 import { SoundManager } from "../classes/SoundManager";
 import { KeyboardManager } from "@/classes/KeyboardManager";
+import Stage from "@/classes/Stage";
 
 enum AppState {
   Idle, // 기본 모드
@@ -14,7 +15,8 @@ export default createStore({
     measures: 4, // 마디 수
     rows: 10, // 악기 수
     state: AppState.Idle, // 현재 상태
-    soundManager: new SoundManager(),
+    stage: new Stage(),
+    // soundManager: new SoundManager(),
     keyboardManager: new KeyboardManager(),
   },
   getters: {
@@ -38,7 +40,8 @@ export default createStore({
       commit("bpm", bpm);
     },
     playSound({ state }, id) {
-      state.soundManager.audioPlay(id);
+      // state.soundManager.audioPlay(id);
+      state.stage.play();
     },
   },
   modules: {},
