@@ -24,12 +24,12 @@ jobs:
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
-      - name: Ready
         uses: actions/setup-node@v1
         with:
           node-version: 8
+
+      - name: Ready
       - run: |
-            cd vue-drum-pad
             npm i
             npm install -g surge
 
