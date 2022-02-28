@@ -32,7 +32,7 @@ export class SoundManager {
     });
   }
 
-  public static get instance (): SoundManager {
+  public static get instance(): SoundManager {
     return this._instance || (this._instance = new SoundManager());
   }
 
@@ -43,10 +43,9 @@ export class SoundManager {
   async audioLoad(id: number, src: string): Promise<void> {
     const buffer: ArrayBuffer = await (await fetch(src)).arrayBuffer();
 
-    this.soundList.push(new Sound(
-      id,
-      await this.audioContext.decodeAudioData(buffer),
-    ));
+    this.soundList.push(
+      new Sound(id, await this.audioContext.decodeAudioData(buffer))
+    );
   }
 
   audioPlay(id: number): void {
