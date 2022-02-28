@@ -31,14 +31,20 @@ jobs:
 
       - name: Ready
         run: |
+            cd vue-drum-pad
             npm i
             npm install -g surge
 
       - name: Lint
-        run: npm run lint
+        run: |
+            cd vue-drum-pad
+            npm run lint
         
       - name: Build
-        run: npm build
+        run: |
+            cd vue-drum-pad
+            npm build
         
       - name: Deploy
-        run: surge ./dist ${{ secrets.SURGE_DOMAIN }} --token ${{ secrets.SURGE_TOKEN }}
+        run: |
+            surge ./vue-drum-pad/dist ${{ secrets.SURGE_DOMAIN }} --token ${{ secrets.SURGE_TOKEN }}
