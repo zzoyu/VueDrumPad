@@ -1,15 +1,18 @@
-<template>
-  <app-controller />
-</template>
+<script setup lang="ts">
+import { useStore } from "vuex";
+import { key } from "@/store";
 
-<script lang="ts">
-import { defineComponent } from "vue";
+import SoundManager from "@/classes/SoundManager";
+import KeyboardManager from "@/classes/KeyboardManager";
 import AppController from "./AppController.vue";
 
-export default defineComponent({
-  components: { AppController },
-});
+const store = useStore(key);
+await store.dispatch("initialize");
 </script>
+
+<template>
+  <AppController />
+</template>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style></style>

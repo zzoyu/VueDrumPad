@@ -1,18 +1,15 @@
-<template>
-  <app-main />
-</template>
-
-<script lang="ts">
-import { defineComponent } from "vue";
+<script setup lang="ts">
 import AppMain from "./components/AppMain.vue";
-
-export default defineComponent({
-  name: "App",
-  components: {
-    AppMain,
-  },
-});
 </script>
+
+<template>
+  <Suspense>
+    <app-main />
+    <template #fallback>
+      <h1>Loading...</h1>
+    </template>
+  </Suspense>
+</template>
 
 <style>
 #app {
