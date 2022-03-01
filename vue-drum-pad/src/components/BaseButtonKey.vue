@@ -19,7 +19,10 @@ const props = withDefaults(defineProps<Props>(), {
       bigger: props.bigger,
       pressed: props.keyData?.key?.state === KeyState.Pressed,
     }"
-    @click="props.keyData?.pressDown()"
+    @mousedown="props.keyData?.pressDown()"
+    @mouseup="props.keyData?.pressUp()"
+    @touchstart="props.keyData?.pressDown()"
+    @touchend="props.keyData?.pressUp()"
   >
     <slot>{{ props.keyData?.key?.name }}</slot>
   </div>
