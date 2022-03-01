@@ -12,6 +12,8 @@ interface Props {
 const props = withDefaults(defineProps<Props>(), {
   // bigger: false,
 });
+
+const disabled = !props.keyData?.sound;
 </script>
 
 <template>
@@ -22,13 +24,15 @@ const props = withDefaults(defineProps<Props>(), {
       pressed: props.keyData?.key?.state === KeyState.Pressed,
       play: props.play,
       record: props.record,
+      disabled,
     }"
     @mousedown="props.keyData?.pressDown()"
     @mouseup="props.keyData?.pressUp()"
     @touchstart="props.keyData?.pressDown()"
     @touchend="props.keyData?.pressUp()"
   >
-    <slot>{{ props.keyData?.key?.name }}</slot>
+    <slot v-if="disabled === false">{{ props.keyData?.key?.name }}</slot>
+    <slot v-else>{{ props.keyData?.key?.name }}</slot>
   </div>
 </template>
 
@@ -44,6 +48,10 @@ const props = withDefaults(defineProps<Props>(), {
   box-shadow: steelblue 0px 0px 5px;
   margin: 2px;
   user-select: none;
+}
+
+.cell.disabled:not(.play, .record) {
+  background-color: lightgray;
 }
 
 .cell.pressed {
