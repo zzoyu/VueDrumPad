@@ -1,6 +1,8 @@
-import { createStore } from "vuex";
-import { SoundManager } from "../classes/SoundManager";
-import { KeyboardManager } from "@/classes/KeyboardManager";
+import { InjectionKey } from "vue";
+import { createStore, Store } from "vuex";
+import SoundManager from "../classes/SoundManager";
+import KeyboardManager from "@/classes/KeyboardManager";
+import Sheet from "@/classes/Sheet";
 // import Stage from "@/classes/Stage";
 
 enum AppState {
@@ -9,16 +11,22 @@ enum AppState {
   Recording, // 녹음중
 }
 
-export default createStore({
-  state: {
+export interface State {
+  bpm: number;
+  measures: number;
+  rows: number;
+  state: AppState;
+  sheet?: Sheet;
+}
+export const key: InjectionKey<Store<State>> = Symbol();
+
+export const store = createStore<State>({
+  state: () => ({
     bpm: 220, // Beats Per Minute
     measures: 4, // 마디 수
     rows: 10, // 악기 수
     state: AppState.Idle, // 현재 상태
-    // stage: new Stage(rows, 4 * 4),
-    // soundManager: new SoundManager(),
-    keyboardManager: new KeyboardManager(),
-  },
+  }),
   getters: {
     bpm(state) {
       return state?.bpm;
@@ -36,11 +44,17 @@ export default createStore({
     },
   },
   actions: {
+    async initialize({ state }) {
+      await SoundManager.initialize();
+      console.log("Sound initialized");
+      KeyboardManager.initialize();
+      state.sheet = new Sheet(state.rows, state.measures * 4);
+    },
     updateBpm({ commit }, bpm: number): void {
       commit("bpm", bpm);
     },
     playSound(_, id: number): void {
-      SoundManager.instance.audioPlay(id);
+      SoundManager.audioPlay(id);
     },
   },
   modules: {},
