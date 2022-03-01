@@ -1,11 +1,11 @@
 import Beat from "./Beat";
-import KeyboardManager from "./KeyboardManager";
+import SoundManager from "./SoundManager";
 
 class Column extends Array<Beat> {
   constructor(height: number) {
     super(height);
-    KeyboardManager.keyList.forEach((value, index) => {
-      this[index] = new Beat(false, value.sound);
+    this.map((value, index) => {
+      value = new Beat(false, SoundManager.getSoundById(index));
     });
   }
 
