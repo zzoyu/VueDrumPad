@@ -27,13 +27,13 @@ jobs:
         uses: actions/checkout@v2
       - uses: actions/setup-node@v1
         with:
-          node-version: 8
+          node-version: 17
 
       - name: Ready
         run: |
           cd vue-drum-pad
           yarn install
-          yarn install global surge
+          npm install -g surge
 
       - name: Lint
         run: |
