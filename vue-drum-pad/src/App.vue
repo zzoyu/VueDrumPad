@@ -9,7 +9,7 @@ import AppMain from "./components/AppMain.vue";
 export default defineComponent({
   name: "App",
   components: {
-    AppMain
+    AppMain,
   },
 });
 </script>
