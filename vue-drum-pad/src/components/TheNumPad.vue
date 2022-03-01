@@ -30,8 +30,14 @@ const activate = (id: number) => {
         </div>
       </div>
       <div class="col">
-        <base-button-key bigger>+</base-button-key>
-        <base-button-key bigger>Enter</base-button-key>
+        <base-button-key
+          :key-data="KeyboardManager.getKey('+')"
+          bigger
+        ></base-button-key>
+        <base-button-key
+          :key-data="KeyboardManager.getKey('Enter')"
+          bigger
+        ></base-button-key>
       </div>
     </div>
     <the-footer />
