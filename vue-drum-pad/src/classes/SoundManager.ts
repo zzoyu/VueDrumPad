@@ -30,9 +30,10 @@ export class SoundManager {
     source.connect(gainNode);
     gainNode.connect(this.audioContext.destination);
 
-    for (let i = 0; i < audioFileList.length; i++) {
-      await this.audioLoad(i, audioFileList[i]);
-    }
+    await this.audioLoadAll(audioFileList);
+    // for (let i = 0; i < audioFileList.length; i++) {
+    //   await this.audioLoad(i, audioFileList[i]);
+    // }
   }
 
   public static get instance(): SoundManager {
@@ -41,6 +42,12 @@ export class SoundManager {
 
   getSoundById(id: number): Sound | undefined {
     return this.soundList.find((item) => item.id === id);
+  }
+
+  async audioLoadAll(fileList: Array<any>): Promise<void[]> {
+    return Promise.all(
+      fileList.map((value, index) => this.audioLoad(index, value))
+    );
   }
 
   async audioLoad(id: number, src: string): Promise<void> {

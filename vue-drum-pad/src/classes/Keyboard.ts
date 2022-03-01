@@ -34,8 +34,8 @@ export default class Key {
 export class SpecialKey extends Key {
   callback: () => void;
 
-  constructor(sound: Sound, key: KeyData, callback: () => void) {
-    super(sound, key);
+  constructor(key: KeyData, callback: () => void) {
+    super(undefined, key);
     this.callback = callback;
   }
 

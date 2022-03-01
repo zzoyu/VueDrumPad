@@ -1,9 +1,13 @@
-import Key, { KeyState } from "./Keyboard";
+import Key, { KeyState, SpecialKey } from "./Keyboard";
 import SoundManager from "./SoundManager";
 
 export class KeyboardManager {
   private static _instance: KeyboardManager;
   public keyList: Array<Key> = [];
+
+  private constructor() {
+    this.keyList = [];
+  }
 
   public static get instance(): KeyboardManager {
     return this._instance || (this._instance = new KeyboardManager());
@@ -50,12 +54,40 @@ export class KeyboardManager {
       new Key(SoundManager.getSoundById(9), {
         name: "9",
         state: KeyState.Idle,
-      })
+      }),
+      new SpecialKey(
+        {
+          name: "+",
+          state: KeyState.Idle,
+        },
+        () => {
+          console.log("SPECIAL KEY!");
+        }
+      ),
+      new SpecialKey(
+        {
+          name: "Enter",
+          state: KeyState.Idle,
+        },
+        () => {
+          console.log("SPECIAL KEY!");
+        }
+      )
     );
 
     document.addEventListener("keydown", (event: KeyboardEvent): void => {
       console.log(event.key);
+      this.getKey(event.key)?.pressDown();
     });
+
+    document.addEventListener("keyup", (event: KeyboardEvent): void => {
+      console.log(event.key);
+      this.getKey(event.key)?.pressUp();
+    });
+  }
+
+  getKey(name: string): Key | undefined {
+    return this.keyList.find((value) => value.key.name === name);
   }
 }
 
