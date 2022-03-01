@@ -5,10 +5,12 @@ interface Props {
   // audioSource: string;
   bigger?: boolean;
   keyData?: Key;
+  play?: boolean;
+  record?: boolean;
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  bigger: false,
+  // bigger: false,
 });
 </script>
 
@@ -18,6 +20,8 @@ const props = withDefaults(defineProps<Props>(), {
     :class="{
       bigger: props.bigger,
       pressed: props.keyData?.key?.state === KeyState.Pressed,
+      play: props.play,
+      record: props.record,
     }"
     @mousedown="props.keyData?.pressDown()"
     @mouseup="props.keyData?.pressUp()"
@@ -50,11 +54,11 @@ const props = withDefaults(defineProps<Props>(), {
   background-color: steelblue;
 }
 
-#\+.pressed {
+.record.pressed {
   background-color: tomato;
 }
 
-#\+:hover {
+.record:hover {
   background-color: tomato;
 }
 

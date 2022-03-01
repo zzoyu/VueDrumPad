@@ -89,6 +89,10 @@ export class KeyboardManager {
   getKey(name: string): Key | undefined {
     return this.keyList.find((value) => value.key.name === name);
   }
+
+  getKeyState(): Array<KeyState> {
+    return this.keyList.map((value) => value.key.state);
+  }
 }
 
 export default KeyboardManager.instance;

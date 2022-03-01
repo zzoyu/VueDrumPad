@@ -1,7 +1,7 @@
 import { InjectionKey } from "vue";
 import { createStore, Store } from "vuex";
 import SoundManager from "../classes/SoundManager";
-import KeyboardManager from "@/classes/KeyboardManager";
+import keyboardManager, { KeyboardManager } from "@/classes/KeyboardManager";
 import Sheet from "@/classes/Sheet";
 // import Stage from "@/classes/Stage";
 
@@ -17,6 +17,7 @@ export interface State {
   rows: number;
   state: AppState;
   sheet?: Sheet;
+  keyboardManager: KeyboardManager;
 }
 export const key: InjectionKey<Store<State>> = Symbol();
 
@@ -26,6 +27,7 @@ export const store = createStore<State>({
     measures: 4, // 마디 수
     rows: 10, // 악기 수
     state: AppState.Idle, // 현재 상태
+    keyboardManager,
   }),
   getters: {
     bpm(state) {
@@ -37,6 +39,15 @@ export const store = createStore<State>({
     measures(state) {
       return state?.measures;
     },
+    keyboardManager(state) {
+      return state.keyboardManager;
+    },
+    keyState(state) {
+      return state.keyboardManager.getKeyState();
+    },
+    key(state) {
+      return state.keyboardManager.keyList;
+    },
   },
   mutations: {
     bpm(state, bpm) {
@@ -47,7 +58,7 @@ export const store = createStore<State>({
     async initialize({ state }) {
       await SoundManager.initialize();
       console.log("Sound initialized");
-      KeyboardManager.initialize();
+      state.keyboardManager.initialize();
       state.sheet = new Sheet(state.rows, state.measures * 4);
     },
     updateBpm({ commit }, bpm: number): void {

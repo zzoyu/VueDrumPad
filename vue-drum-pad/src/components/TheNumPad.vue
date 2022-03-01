@@ -1,11 +1,12 @@
 <script setup lang="ts">
 import { useStore } from "vuex";
+import { key } from "@/store";
 import TheFooter from "./TheFooter.vue";
 import TheHeader from "./TheHeader.vue";
 import BaseButtonKey from "./BaseButtonKey.vue";
 import KeyboardManager from "@/classes/KeyboardManager";
 
-const store = useStore();
+const store = useStore(key);
 
 const activate = (id: number) => {
   store.dispatch("playSound", id);
@@ -19,24 +20,26 @@ const activate = (id: number) => {
       <div class="col">
         <div class="row" v-for="row in 3" :key="`row_${row}`">
           <base-button-key
-            :key-data="KeyboardManager.keyList[10 - (4 - col + (row - 1) * 3)]"
+            :key-data="store.getters.key[10 - (4 - col + (row - 1) * 3)]"
             v-for="col in 3"
             :key="`row_${row}_${col}`"
           />
         </div>
         <div class="row">
-          <base-button-key :key-data="KeyboardManager.keyList[0]" bigger />
+          <base-button-key :key-data="store.getters.key[0]" bigger />
           <base-button-key>.</base-button-key>
         </div>
       </div>
       <div class="col">
         <base-button-key
-          :key-data="KeyboardManager.getKey('+')"
+          :key-data="store.getters.keyboardManager.getKey('+')"
           bigger
+          record
         ></base-button-key>
         <base-button-key
-          :key-data="KeyboardManager.getKey('Enter')"
+          :key-data="store.getters.keyboardManager.getKey('Enter')"
           bigger
+          play
         ></base-button-key>
       </div>
     </div>
