@@ -4,13 +4,8 @@ import { key } from "@/store";
 import TheFooter from "./TheFooter.vue";
 import TheHeader from "./TheHeader.vue";
 import BaseButtonKey from "./BaseButtonKey.vue";
-import KeyboardManager from "@/classes/KeyboardManager";
 
 const store = useStore(key);
-
-const activate = (id: number) => {
-  store.dispatch("playSound", id);
-};
 </script>
 
 <template>

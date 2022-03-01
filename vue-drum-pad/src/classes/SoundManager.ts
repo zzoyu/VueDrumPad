@@ -44,7 +44,7 @@ export class SoundManager {
     return this.soundList.find((item) => item.id === id);
   }
 
-  async audioLoadAll(fileList: Array<any>): Promise<void[]> {
+  async audioLoadAll(fileList: Array<string>): Promise<void[]> {
     return Promise.all(
       fileList.map((value, index) => this.audioLoad(index, value))
     );

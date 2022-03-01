@@ -2,8 +2,6 @@
 import { useStore } from "vuex";
 import { key } from "@/store";
 
-import SoundManager from "@/classes/SoundManager";
-import KeyboardManager from "@/classes/KeyboardManager";
 import AppController from "./AppController.vue";
 
 const store = useStore(key);
