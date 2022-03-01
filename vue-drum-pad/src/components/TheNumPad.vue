@@ -1,3 +1,17 @@
+<script setup lang="ts">
+import { useStore } from "vuex";
+import TheFooter from "./TheFooter.vue";
+import TheHeader from "./TheHeader.vue";
+import BaseButtonKey from "./BaseButtonKey.vue";
+import KeyboardManager from "@/classes/KeyboardManager";
+
+const store = useStore();
+
+const activate = (id: number) => {
+  store.dispatch("playSound", id);
+};
+</script>
+
 <template>
   <div class="col">
     <the-header />
@@ -5,15 +19,14 @@
       <div class="col">
         <div class="row" v-for="row in 3" :key="`row_${row}`">
           <base-button-key
-            :id="10 - (4 - col + (row - 1) * 3)"
+            :key-data="KeyboardManager.keyList[10 - (4 - col + (row - 1) * 3)]"
             v-for="col in 3"
             :key="`row_${row}_${col}`"
-            v-on:activate="activate"
           />
         </div>
         <div class="row">
-          <base-button-key :id="0" bigger v-on:activate="activate" />
-          <base-button-key id="." />
+          <base-button-key :key-data="KeyboardManager.keyList[0]" bigger />
+          <base-button-key>.</base-button-key>
         </div>
       </div>
       <div class="col">
@@ -24,30 +37,5 @@
     <the-footer />
   </div>
 </template>
-
-<script lang="ts">
-import { defineComponent } from "vue";
-import { useStore } from "vuex";
-import BaseButtonKey from "./BaseButtonKey.vue";
-import TheFooter from "./TheFooter.vue";
-import TheHeader from "./TheHeader.vue";
-
-export default defineComponent({
-  components: { BaseButtonKey, TheHeader, TheFooter },
-  setup() {
-    const store = useStore();
-
-    return {
-      activate(id: number) {
-        store.dispatch("playSound", id);
-      },
-    };
-  },
-
-  data() {
-    return {};
-  },
-});
-</script>
 
 <style></style>

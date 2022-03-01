@@ -1,25 +1,29 @@
-<template>
-  <div class="cell" :id="id" :class="{ bigger }" @click="$emit('activate', id)">
-    {{ id }}
-    <audio :src="audioSource" />
-  </div>
-</template>
+<script setup lang="ts">
+import Key, { KeyState } from "@/classes/Keyboard";
 
-<script lang="ts">
-import { defineComponent } from "vue";
+interface Props {
+  // audioSource: string;
+  bigger?: boolean;
+  keyData?: Key;
+}
 
-export default defineComponent({
-  setup() {
-    return {};
-  },
-
-  props: {
-    audioSource: String,
-    bigger: Boolean,
-    id: Number,
-  },
+const props = withDefaults(defineProps<Props>(), {
+  bigger: false,
 });
 </script>
+
+<template>
+  <div
+    class="cell"
+    :class="{
+      bigger: props.bigger,
+      pressed: props.keyData?.key?.state === KeyState.Pressed,
+    }"
+    @click="props.keyData?.pressDown()"
+  >
+    <slot>{{ props.keyData?.key?.name }}</slot>
+  </div>
+</template>
 
 <style scoped>
 .cell {

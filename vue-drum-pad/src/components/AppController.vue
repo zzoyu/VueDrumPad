@@ -1,15 +1,10 @@
+<script setup lang="ts">
+import TheBase from "./TheBase.vue";
+</script>
+
 <template>
   <the-base />
 </template>
-
-<script lang="ts">
-import { defineComponent } from "vue";
-import TheBase from "./TheBase.vue";
-
-export default defineComponent({
-  components: { TheBase },
-});
-</script>
 
 <style>
 div {

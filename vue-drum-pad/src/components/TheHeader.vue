@@ -12,10 +12,11 @@
 <script lang="ts">
 import { defineComponent, computed } from "vue";
 import { useStore } from "vuex";
+import { key } from "@/store";
 
 export default defineComponent({
   setup() {
-    const store = useStore();
+    const store = useStore(key);
     const bpm = computed({
       get() {
         return store.getters.bpm;

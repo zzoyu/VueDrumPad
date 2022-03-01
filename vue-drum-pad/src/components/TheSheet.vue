@@ -12,13 +12,14 @@
 <script lang="ts">
 import { defineComponent, computed } from "vue";
 import { useStore } from "vuex";
-import SheetRow from "./SheetRow.vue";
+import { key } from "@/store";
+// import SheetRow from "./SheetRow.vue";
 
 export default defineComponent({
-  components: { SheetRow },
+  // components: { SheetRow },
 
   setup() {
-    const store = useStore();
+    const store = useStore(key);
     const rows = computed(() => {
       return store.getters.rows;
     });
