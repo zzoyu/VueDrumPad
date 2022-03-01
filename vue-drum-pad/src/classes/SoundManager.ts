@@ -21,15 +21,18 @@ export class SoundManager {
   private constructor() {
     // const AudioContext = (window?.AudioContext || window?.webkitAudioContext);
     this.audioContext = new AudioContext();
+  }
+
+  async initialize() {
     const gainNode = this.audioContext.createGain();
     const source = this.audioContext.createBufferSource();
 
     source.connect(gainNode);
     gainNode.connect(this.audioContext.destination);
 
-    audioFileList.forEach((value, index) => {
-      this.audioLoad(index, value);
-    });
+    for (let i = 0; i < audioFileList.length; i++) {
+      await this.audioLoad(i, audioFileList[i]);
+    }
   }
 
   public static get instance(): SoundManager {
@@ -37,7 +40,7 @@ export class SoundManager {
   }
 
   getSoundById(id: number): Sound | undefined {
-    return this?.soundList?.find?.((item) => item.id === id);
+    return this.soundList.find((item) => item.id === id);
   }
 
   async audioLoad(id: number, src: string): Promise<void> {

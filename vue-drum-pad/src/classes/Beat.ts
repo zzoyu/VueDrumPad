@@ -1,13 +1,16 @@
-import Instrument from "./Instrument";
+import Sound from "./Sound";
+import SoundManager from "./SoundManager";
 
 export default class Beat {
-  instrument: Instrument;
+  isOn: boolean;
+  sound?: Sound;
 
-  constructor(instrument: Instrument) {
-    this.instrument = instrument;
+  constructor(isOn: boolean, sound?: Sound) {
+    this.isOn = isOn;
+    this.sound = sound;
   }
 
   play() {
-    this.instrument.soundHandler();
+    this.sound?.id && SoundManager.audioPlay(this.sound.id);
   }
 }

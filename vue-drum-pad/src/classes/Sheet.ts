@@ -1,39 +1,41 @@
 import Beat from "./Beat";
-import Instrument from "./Instrument";
+import KeyboardManager from "./KeyboardManager";
 
-interface Column extends Object {
-  [key: number]: Beat;
+class Column extends Array<Beat> {
+  constructor(height: number) {
+    super(height);
+    KeyboardManager.keyList.forEach((value, index) => {
+      this[index] = new Beat(false, value.sound);
+    });
+  }
+
+  play() {
+    this.filter((value) => value.isOn).forEach((value) => value.play());
+  }
 }
 
 export default class Sheet {
   notes: Array<Column>;
-  table: Array<Array<boolean>>;
+  readonly row: number;
 
-  constructor(row: number, col: number) {
-    this.notes = new Array(col);
-    this.table = Array.from(Array(row), () => Array<boolean>(col).fill(false));
+  constructor(row: number, column: number) {
+    this.row = row;
+    this.notes = new Array(column).fill(new Column(row));
   }
 
-  addColumns(col: number) {
-    this.table.forEach((value) =>
-      value.concat(Array<boolean>(col).fill(false))
-    );
-    this.notes.concat(Array(col));
+  addColumns(column: number) {
+    this.notes.push(...new Array<Column>(column).fill(new Column(this.row)));
   }
 
-  on(instrument: Instrument, index: number) {
-    this.notes[index][instrument.id] = new Beat(instrument);
-    this.table[instrument.id][index] = true;
+  on(indexBeat: number, indexColumn: number) {
+    this.notes[indexColumn][indexBeat].isOn = true;
   }
 
-  off(instrument: Instrument, index: number) {
-    delete this.notes[index][instrument.id];
-    this.table[instrument.id][index] = false;
+  off(indexBeat: number, indexColumn: number) {
+    this.notes[indexColumn][indexBeat].isOn = false;
   }
 
   playColumn(index: number) {
-    Object.values(this.notes[index]).forEach((value: Beat) => {
-      value.play();
-    });
+    this.notes[index].play();
   }
 }
