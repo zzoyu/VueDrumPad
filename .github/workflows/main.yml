@@ -33,7 +33,7 @@ jobs:
         run: |
           cd vue-drum-pad
           yarn install
-          yarn install global surge
+          yarn add global surge
 
       - name: Lint
         run: |
