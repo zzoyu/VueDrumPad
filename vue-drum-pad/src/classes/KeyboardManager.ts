@@ -1,4 +1,4 @@
-import Key, { KeyState, SpecialKey } from "./Keyboard";
+import Key, { KeyState } from "./Keyboard";
 import SoundManager from "./SoundManager";
 
 export class KeyboardManager {
@@ -13,7 +13,7 @@ export class KeyboardManager {
     return this._instance || (this._instance = new KeyboardManager());
   }
 
-  initialize() {
+  initialize(specialKeys: Array<Key>) {
     this.keyList.push(
       new Key(SoundManager.getSoundById(0), {
         name: "0",
@@ -55,24 +55,7 @@ export class KeyboardManager {
         name: "9",
         state: KeyState.Idle,
       }),
-      new SpecialKey(
-        {
-          name: "+",
-          state: KeyState.Idle,
-        },
-        () => {
-          console.log("SPECIAL KEY!");
-        }
-      ),
-      new SpecialKey(
-        {
-          name: "Enter",
-          state: KeyState.Idle,
-        },
-        () => {
-          console.log("SPECIAL KEY!");
-        }
-      )
+      ...specialKeys
     );
 
     document.addEventListener("keydown", (event: KeyboardEvent): void => {

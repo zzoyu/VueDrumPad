@@ -3,6 +3,7 @@ import { createStore, Store } from "vuex";
 import SoundManager from "../classes/SoundManager";
 import keyboardManager, { KeyboardManager } from "@/classes/KeyboardManager";
 import Sheet from "@/classes/Sheet";
+import { KeyState, SpecialKey } from "@/classes/Keyboard";
 // import Stage from "@/classes/Stage";
 
 enum AppState {
@@ -64,7 +65,26 @@ export const store = createStore<State>({
     async initialize({ state }) {
       await SoundManager.initialize();
       console.log("Sound initialized");
-      state.keyboardManager.initialize();
+      state.keyboardManager.initialize([
+        new SpecialKey(
+          {
+            name: "+",
+            state: KeyState.Idle,
+          },
+          () => {
+            console.log("SPECIAL KEY!");
+          }
+        ),
+        new SpecialKey(
+          {
+            name: "Enter",
+            state: KeyState.Idle,
+          },
+          () => {
+            console.log("SPECIAL KEY!");
+          }
+        ),
+      ]);
       console.log("Keyboard initialized");
       state.sheet = new Sheet(state.rows, state.measures * 4);
     },
