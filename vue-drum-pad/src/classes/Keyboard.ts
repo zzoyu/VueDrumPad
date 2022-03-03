@@ -41,11 +41,11 @@ export class SpecialKey extends Key {
     this.isTogglable = true;
   }
 
-  pressDown(): void {
+  pressDown(callback?: () => void): void {
     if (this.key.state !== KeyState.Pressed && this.isTogglable) {
       this.key.state = KeyState.Pressed;
       this.isTogglable = false;
-      this.callback?.();
+      callback ? callback?.() : this.callback?.();
     } else if (this.key.state === KeyState.Pressed && this.isTogglable) {
       this.key.state = KeyState.Idle;
       this.isTogglable = false;

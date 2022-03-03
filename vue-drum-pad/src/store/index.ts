@@ -51,6 +51,9 @@ export const store = createStore<State>({
     sheet(state): Sheet | undefined {
       return state.sheet;
     },
+    state(state): AppState {
+      return state.state;
+    },
   },
   mutations: {
     bpm(state, bpm) {
