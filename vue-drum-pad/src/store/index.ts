@@ -57,12 +57,15 @@ export const store = createStore<State>({
     },
   },
   mutations: {
-    bpm(state, bpm) {
+    SET_BPM(state, bpm) {
       state.bpm = bpm;
+    },
+    CHANGE_STATE(state, appState) {
+      state.state = appState;
     },
   },
   actions: {
-    async initialize({ state }) {
+    async initialize({ state, commit }) {
       await SoundManager.initialize();
       console.log("Sound initialized");
       state.keyboardManager.initialize([
@@ -71,8 +74,14 @@ export const store = createStore<State>({
             name: "+",
             state: KeyState.Idle,
           },
+          (): boolean => {
+            if (state.state !== AppState.Idle) return false;
+            commit("CHANGE_STATE", AppState.Recording);
+            return true;
+          },
           () => {
-            console.log("SPECIAL KEY!");
+            commit("CHANGE_STATE", AppState.Idle);
+            return true;
           }
         ),
         new SpecialKey(
@@ -81,7 +90,13 @@ export const store = createStore<State>({
             state: KeyState.Idle,
           },
           () => {
-            console.log("SPECIAL KEY!");
+            if (state.state !== AppState.Idle) return false;
+            commit("CHANGE_STATE", AppState.Playing);
+            return true;
+          },
+          () => {
+            commit("CHANGE_STATE", AppState.Idle);
+            return true;
           }
         ),
       ]);
@@ -89,7 +104,7 @@ export const store = createStore<State>({
       state.sheet = new Sheet(state.rows, state.measures * 4);
     },
     updateBpm({ commit }, bpm: number): void {
-      commit("bpm", bpm);
+      commit("SET_BPM", bpm);
     },
     playSound(_, id: number): void {
       SoundManager.audioPlay(id);

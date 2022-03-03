@@ -32,23 +32,32 @@ export default class Key {
 }
 
 export class SpecialKey extends Key {
-  callback: () => void;
+  callbackDown?: () => boolean;
+  callbackUp?: () => boolean;
   isTogglable: boolean;
 
-  constructor(key: KeyData, callback: () => void) {
+  constructor(
+    key: KeyData,
+    callbackDown?: () => boolean,
+    callbackUp?: () => boolean
+  ) {
     super(undefined, key);
-    this.callback = callback;
+    this.callbackDown = callbackDown;
+    this.callbackUp = callbackUp;
     this.isTogglable = true;
   }
 
   pressDown(callback?: () => void): void {
     if (this.key.state !== KeyState.Pressed && this.isTogglable) {
-      this.key.state = KeyState.Pressed;
-      this.isTogglable = false;
-      callback ? callback?.() : this.callback?.();
+      if (this.callbackDown?.()) {
+        this.key.state = KeyState.Pressed;
+        this.isTogglable = false;
+        callback?.();
+      }
     } else if (this.key.state === KeyState.Pressed && this.isTogglable) {
       this.key.state = KeyState.Idle;
       this.isTogglable = false;
+      this.callbackUp?.();
     }
   }
 
