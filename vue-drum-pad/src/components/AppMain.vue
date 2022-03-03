@@ -9,7 +9,9 @@ await store.dispatch("initialize");
 </script>
 
 <template>
-  <AppController />
+  <transition name="fade">
+    <app-controller />
+  </transition>
 </template>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->

@@ -52,6 +52,7 @@ const disabled = !props.keyData?.sound;
 
 .cell.disabled:not(.play, .record) {
   background-color: lightgray;
+  box-shadow: lightgray 0px 0px 5px;
 }
 
 .cell.pressed {

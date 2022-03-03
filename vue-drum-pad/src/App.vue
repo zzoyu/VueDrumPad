@@ -6,7 +6,7 @@ import AppMain from "./components/AppMain.vue";
   <Suspense>
     <app-main />
     <template #fallback>
-      <h1>Loading...</h1>
+      <h1>Initiating ...</h1>
     </template>
   </Suspense>
 </template>
@@ -16,5 +16,12 @@ import AppMain from "./components/AppMain.vue";
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s;
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  opacity: 0;
 }
 </style>

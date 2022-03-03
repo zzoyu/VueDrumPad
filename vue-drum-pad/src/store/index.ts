@@ -48,6 +48,9 @@ export const store = createStore<State>({
     key(state) {
       return state.keyboardManager.keyList;
     },
+    sheet(state): Sheet | undefined {
+      return state.sheet;
+    },
   },
   mutations: {
     bpm(state, bpm) {
@@ -59,6 +62,7 @@ export const store = createStore<State>({
       await SoundManager.initialize();
       console.log("Sound initialized");
       state.keyboardManager.initialize();
+      console.log("Keyboard initialized");
       state.sheet = new Sheet(state.rows, state.measures * 4);
     },
     updateBpm({ commit }, bpm: number): void {

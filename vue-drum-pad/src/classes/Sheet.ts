@@ -4,9 +4,8 @@ import SoundManager from "./SoundManager";
 class Column extends Array<Beat> {
   constructor(height: number) {
     super(height);
-    this.map((value, index) => {
-      value = new Beat(false, SoundManager.getSoundById(index));
-    });
+    for (let i = 0; i < this.length; i++)
+      this[i] = new Beat(false, SoundManager.getSoundById(i));
   }
 
   play() {
@@ -20,11 +19,13 @@ export default class Sheet {
 
   constructor(row: number, column: number) {
     this.row = row;
-    this.notes = new Array(column).fill(new Column(row));
+    this.notes = Array.from(new Array<Column>(column), () => new Column(row));
   }
 
   addColumns(column: number) {
-    this.notes.push(...new Array<Column>(column).fill(new Column(this.row)));
+    this.notes.push(
+      ...Array.from(new Array<Column>(column), () => new Column(this.row))
+    );
   }
 
   on(indexBeat: number, indexColumn: number) {
@@ -37,5 +38,9 @@ export default class Sheet {
 
   playColumn(index: number) {
     this.notes[index].play();
+  }
+
+  getRow(index: number) {
+    return this.notes.map((value) => value[index]);
   }
 }
