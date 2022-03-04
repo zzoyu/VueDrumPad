@@ -41,8 +41,9 @@ h1 {
   background: linear-gradient(to right, steelblue, lightsteelblue);
   background-clip: text;
   -webkit-text-fill-color: transparent;
-  display: flex;
+  /* display: flex; */
   flex-grow: 2;
+  text-align: center;
   justify-content: center;
 }
 
