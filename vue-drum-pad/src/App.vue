@@ -6,7 +6,7 @@ import AppMain from "./components/AppMain.vue";
   <Suspense>
     <app-main />
     <template #fallback>
-      <h1>Initiating ...</h1>
+      <h1>Initializing ...</h1>
     </template>
   </Suspense>
 </template>
