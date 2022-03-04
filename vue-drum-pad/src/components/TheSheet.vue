@@ -29,5 +29,7 @@ const measures = computed(() => {
   padding: 5px;
   border-radius: 1rem;
   box-shadow: steelblue 0px 0px;
+  display: flex;
+  overflow-x: scroll;
 }
 </style>

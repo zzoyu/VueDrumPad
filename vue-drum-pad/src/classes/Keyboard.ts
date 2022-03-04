@@ -19,11 +19,13 @@ export default class Key {
     this.key = key;
   }
 
-  pressDown() {
+  pressDown(): boolean {
     if (this.key.state !== KeyState.Pressed) {
       this.key.state = KeyState.Pressed;
       this.sound && SoundManager.audioPlay(this.sound.id);
+      return true;
     }
+    return false;
   }
 
   pressUp() {
@@ -47,18 +49,20 @@ export class SpecialKey extends Key {
     this.isTogglable = true;
   }
 
-  pressDown(callback?: () => void): void {
+  pressDown(callback?: () => void) {
     if (this.key.state !== KeyState.Pressed && this.isTogglable) {
       if (this.callbackDown?.()) {
         this.key.state = KeyState.Pressed;
         this.isTogglable = false;
         callback?.();
+        return true;
       }
     } else if (this.key.state === KeyState.Pressed && this.isTogglable) {
       this.key.state = KeyState.Idle;
       this.isTogglable = false;
       this.callbackUp?.();
     }
+    return false;
   }
 
   pressUp(): void {

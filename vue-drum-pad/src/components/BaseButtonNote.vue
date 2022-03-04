@@ -1,19 +1,36 @@
 <script setup lang="ts">
-const props = withDefaults(defineProps<{ modelValue: boolean }>(), {
-  modelValue: false,
-});
+import Beat from "@/classes/Beat";
+import { AppState } from "@/store";
+
+const props = withDefaults(
+  defineProps<{ modelValue: Beat; state: AppState }>(),
+  {
+    // modelValue: false,
+    state: AppState.Idle,
+  }
+);
 
 const emit = defineEmits<{
-  (event: "update:modelValue", value: boolean): void;
+  (event: "update:modelValue", value: Beat): void;
 }>();
 
 const click = () => {
-  emit("update:modelValue", !props.modelValue);
+  const temp = props.modelValue;
+  temp.isOn = !temp.isOn;
+  emit("update:modelValue", temp);
 };
 </script>
 
 <template>
-  <div class="note" @click="click" :class="{ pressed: props.modelValue }"></div>
+  <div
+    class="note"
+    @click="click"
+    :class="{
+      pressed: props.modelValue.isOn,
+      playing: state === AppState.Playing,
+      recording: state === AppState.Recording,
+    }"
+  ></div>
 </template>
 
 <style scoped>
@@ -33,6 +50,10 @@ const click = () => {
 .note.playing {
   box-shadow: blue 0px 0px 5px;
 }
+.note.recording {
+  box-shadow: red 0px 0px 5px;
+}
+
 .note.pressed {
   border: darkblue -1px solid;
   background-color: blue;

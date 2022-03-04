@@ -2,7 +2,7 @@
 import BaseButtonNote from "./BaseButtonNote.vue";
 import { computed } from "vue";
 import { useStore } from "vuex";
-import { key } from "@/store";
+import { key, AppState } from "@/store";
 
 const store = useStore(key);
 
@@ -28,7 +28,13 @@ const row = computed(() => {
     <base-button-note
       v-for="(note, i) in row"
       :key="`row_${props.index}_note_${i}`"
-      v-model="row[i].isOn"
+      v-model="row[i]"
+      :state="
+        store.getters.currentIndex === i &&
+        store.getters.state !== AppState.Idle
+          ? store.getters.state
+          : undefined
+      "
     />
   </div>
 </template>
@@ -43,6 +49,7 @@ const row = computed(() => {
   height: 50px;
   border-radius: 0.5rem;
   margin: 2px;
+  flex-shrink: 0;
 }
 
 .note_head {
@@ -58,6 +65,10 @@ const row = computed(() => {
   color: whitesmoke;
   font-weight: bold;
   font-size: large;
+  flex-shrink: 0;
+  align-self: flex-start;
+  position: -webkit-sticky;
+  position: sticky;
 }
 
 .note_head.pressed {

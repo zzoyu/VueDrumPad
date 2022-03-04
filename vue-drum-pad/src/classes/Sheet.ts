@@ -2,14 +2,19 @@ import Beat from "./Beat";
 import SoundManager from "./SoundManager";
 
 class Column extends Array<Beat> {
-  constructor(height: number) {
+  constructor(height: number, beats?: boolean[]) {
     super(height);
     for (let i = 0; i < this.length; i++)
-      this[i] = new Beat(false, SoundManager.getSoundById(i));
+      this[i] = new Beat(beats?.[i] ?? false, SoundManager.getSoundById(i));
   }
 
   play() {
+    console.log(this.filter((value) => value.isOn));
     this.filter((value) => value.isOn).forEach((value) => value.play());
+  }
+
+  clear() {
+    this.forEach((element) => (element.isOn = false));
   }
 }
 
@@ -42,5 +47,16 @@ export default class Sheet {
 
   getRow(index: number) {
     return this.notes.map((value) => value[index]);
+  }
+
+  clear() {
+    this.notes.forEach((v) => v.clear());
+  }
+
+  setByArray(args: Array<Array<boolean>>) {
+    this.notes = Array.from(
+      new Array<Column>(args.length),
+      (v, k) => new Column(this.row, args[k])
+    );
   }
 }

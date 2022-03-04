@@ -1,9 +1,15 @@
 import Key, { KeyState } from "./Keyboard";
 import SoundManager from "./SoundManager";
 
+interface InitializeData {
+  specialKeys: Array<Key>;
+  recordCallback: (keyId: number) => void;
+}
 export class KeyboardManager {
   private static _instance: KeyboardManager;
   public keyList: Array<Key> = [];
+
+  recordCallback?: InitializeData["recordCallback"];
 
   private constructor() {
     this.keyList = [];
@@ -13,7 +19,9 @@ export class KeyboardManager {
     return this._instance || (this._instance = new KeyboardManager());
   }
 
-  initialize(specialKeys: Array<Key>) {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  initialize({ specialKeys, recordCallback }: InitializeData): void {
+    this.recordCallback = recordCallback;
     this.keyList.push(
       new Key(SoundManager.getSoundById(0), {
         name: "0",
@@ -60,7 +68,9 @@ export class KeyboardManager {
 
     document.addEventListener("keydown", (event: KeyboardEvent): void => {
       console.log(event.key);
-      this.getKey(event.key)?.pressDown();
+      const tempKey = this.getKey(event.key);
+      if (tempKey?.pressDown())
+        tempKey.sound && this.recordCallback?.(parseInt(event.key));
     });
 
     document.addEventListener("keyup", (event: KeyboardEvent): void => {

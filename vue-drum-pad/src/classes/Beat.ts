@@ -11,6 +11,6 @@ export default class Beat {
   }
 
   play() {
-    this.sound?.id && SoundManager.audioPlay(this.sound.id);
+    this.sound && SoundManager.audioPlay(this.sound.id);
   }
 }
