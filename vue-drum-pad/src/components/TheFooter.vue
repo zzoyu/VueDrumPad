@@ -1,6 +1,6 @@
 <template>
   <footer>
-    <a href="https://github.com/zzoyu"><mark>zzoyu💩</mark></a>
+    <a href="https://github.com/zzoyu/VueDrumPad"><mark>zzoyu💩</mark></a>
   </footer>
 </template>
 

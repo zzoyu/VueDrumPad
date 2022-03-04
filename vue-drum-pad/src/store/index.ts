@@ -161,6 +161,9 @@ export const store = createStore<State>({
         }, 1000 * (60 / state.bpm));
       }
     },
+    clearSheet({ state }) {
+      state?.sheet?.clear();
+    },
     setSheet({ state }, notes: Array<Array<boolean>>) {
       state.sheet?.setByArray(notes);
     },
