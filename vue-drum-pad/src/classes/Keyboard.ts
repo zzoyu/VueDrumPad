@@ -13,16 +13,25 @@ interface KeyData {
 export default class Key {
   sound?: Sound;
   key: KeyData;
+  recordCallback: () => void;
 
-  constructor(sound: Sound | undefined, key: KeyData) {
+  constructor(
+    sound: Sound | undefined,
+    key: KeyData,
+    recordCallback?: (keyId: number) => void
+  ) {
     this.sound = sound;
     this.key = key;
+    this.recordCallback = () => recordCallback?.(parseInt(this.key.name));
   }
 
   pressDown(): boolean {
     if (this.key.state !== KeyState.Pressed) {
       this.key.state = KeyState.Pressed;
-      this.sound && SoundManager.audioPlay(this.sound.id);
+      if (this.sound) {
+        SoundManager.audioPlay(this.sound.id);
+        this.recordCallback();
+      }
       return true;
     }
     return false;
