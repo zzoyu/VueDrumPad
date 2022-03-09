@@ -7,8 +7,9 @@
         <input type="number" name="bpm" id="bpm" step="10" v-model="bpm" />
         <label for="bpm">BPM</label>
       </div>
-      <div>
+      <div class="col">
         <button @click="store.dispatch('clearSheet')">초기화</button>
+        <button @click="store.dispatch('toggleModal')">공유</button>
       </div>
     </div>
   </header>

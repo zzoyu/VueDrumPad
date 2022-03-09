@@ -79,7 +79,7 @@ export const store = createStore<State>({
     },
     ADD_INDEX(state) {
       if (state.state === AppState.Idle) return;
-      state.currentIndex < state.measures * 4 - 1
+      state.currentIndex < (state.sheet?.notes.length ?? 0) - 1
         ? state.currentIndex++
         : (state.currentIndex = 0);
     },

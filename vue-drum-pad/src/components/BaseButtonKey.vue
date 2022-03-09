@@ -26,11 +26,11 @@ const disabled = !props.keyData?.sound;
       record: props.record,
       disabled,
     }"
-    @mousedown="props.keyData?.pressDown()"
-    @mouseup="props.keyData?.pressUp()"
     @touchstart="props.keyData?.pressDown()"
     @touchend="props.keyData?.pressUp()"
   >
+    <!-- @mousedown="props.keyData?.pressDown()"
+    @mouseup="props.keyData?.pressUp()" -->
     <slot v-if="disabled === false">{{ props.keyData?.key?.name }}</slot>
     <slot v-else>{{ props.keyData?.key?.name }}</slot>
   </div>

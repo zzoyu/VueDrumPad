@@ -16,6 +16,10 @@ class Column extends Array<Beat> {
   clear() {
     this.forEach((element) => (element.isOn = false));
   }
+
+  getData() {
+    return this.map((value) => (value.isOn ? 1 : 0));
+  }
 }
 
 export default class Sheet {
@@ -58,5 +62,32 @@ export default class Sheet {
       new Array<Column>(args.length),
       (v, k) => new Column(this.row, args[k])
     );
+  }
+
+  setByCode(code: string) {
+    const columns = code.match(/.{1,2}/g);
+    if (columns)
+      this.notes = Array.from(
+        new Array<Column>(columns?.length),
+        (v, k) =>
+          new Column(
+            this.row,
+            parseInt(columns[k], 32)
+              .toString(2)
+              .split("")
+              .map((v) => (v === "1" ? true : false))
+          )
+      );
+  }
+
+  getByCode() {
+    const noteArray = [];
+    for (let i = 0; i < this.notes.length; i++) {
+      const temp = this.notes[i].getData();
+      console.log(temp);
+      noteArray.push(parseInt(temp.join(""), 2).toString(32).padStart(2, "0"));
+    }
+
+    return document.location.origin + "/#/" + noteArray.join("");
   }
 }
