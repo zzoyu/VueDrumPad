@@ -1,14 +1,7 @@
-<script setup lang="ts">
-import AppMain from "./components/AppMain.vue";
-</script>
+<script setup lang="ts"></script>
 
 <template>
-  <Suspense>
-    <app-main />
-    <template #fallback>
-      <h1>Initializing ...</h1>
-    </template>
-  </Suspense>
+  <router-view></router-view>
 </template>
 
 <style>

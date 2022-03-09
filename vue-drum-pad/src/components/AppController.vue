@@ -1,9 +1,19 @@
 <script setup lang="ts">
-import TheBase from "./TheBase.vue";
+import { computed } from "vue";
+import TheBase from "@/components/TheBase.vue";
+import TheCopyDialog from "@/components/TheCopyDialog.vue";
+import { useStore } from "vuex";
+import { key } from "@/store";
+
+const store = useStore(key);
+await store.dispatch("initialize");
+
+const showModal = computed(() => store.getters.isShowModal);
 </script>
 
 <template>
-  <the-base />
+  <the-base :class="{ blur: showModal }" />
+  <the-copy-dialog v-if="showModal"></the-copy-dialog>
 </template>
 
 <style>
@@ -15,6 +25,12 @@ article {
   display: flex;
   flex-direction: row;
 }
+
+.blur {
+  filter: blur(2px);
+  pointer-events: none;
+}
+
 .row {
   display: flex;
   flex-direction: row;

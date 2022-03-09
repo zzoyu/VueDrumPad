@@ -1,20 +1,24 @@
+// import { useStore } from "vuex";
+import { store } from "@/store";
+import AppMainVue from "@/views/AppMain.vue";
 import { createRouter, createWebHashHistory, RouteRecordRaw } from "vue-router";
-import HomeView from "../views/HomeView.vue";
 
 const routes: Array<RouteRecordRaw> = [
   {
     path: "/",
     name: "home",
-    component: HomeView,
+    component: AppMainVue,
   },
   {
-    path: "/about",
-    name: "about",
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () =>
-      import(/* webpackChunkName: "about" */ "../views/AboutView.vue"),
+    path: "/:code",
+    name: "homeWithCode",
+    component: AppMainVue,
+    beforeEnter: (from, to, next) => {
+      console.log(from.params.code);
+      // const store = useStore(key);
+      store.dispatch("registerCode", from.params.code);
+      next();
+    },
   },
 ];
 

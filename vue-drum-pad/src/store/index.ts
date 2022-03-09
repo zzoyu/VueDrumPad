@@ -13,6 +13,7 @@ export enum AppState {
 }
 
 export interface State {
+  code?: string;
   currentIndex: number;
   bpm: number;
   repeat: boolean;
@@ -21,6 +22,7 @@ export interface State {
   state: AppState;
   sheet?: Sheet;
   keyboardManager: KeyboardManager;
+  showModal: boolean;
 }
 export const key: InjectionKey<Store<State>> = Symbol();
 
@@ -33,6 +35,7 @@ export const store = createStore<State>({
     rows: 10, // 악기 수
     state: AppState.Idle, // 현재 상태
     keyboardManager,
+    showModal: false,
   }),
   getters: {
     bpm(state) {
@@ -62,6 +65,9 @@ export const store = createStore<State>({
     currentIndex(state): AppState {
       return state.currentIndex;
     },
+    isShowModal(state) {
+      return state.showModal;
+    },
   },
   mutations: {
     SET_BPM(state, bpm) {
@@ -83,8 +89,14 @@ export const store = createStore<State>({
     TOGGLE_WHITELIST(state, name) {
       state.keyboardManager.toggleWhitelist(name);
     },
+    TOGGLE_MODAL(state) {
+      state.showModal = !state.showModal;
+    },
   },
   actions: {
+    registerCode({ state }, code) {
+      state.code = code;
+    },
     async initialize({ state, commit, dispatch }) {
       await SoundManager.initialize();
       console.log("Sound initialized");
@@ -134,24 +146,26 @@ export const store = createStore<State>({
       });
       console.log("Keyboard initialized");
       state.sheet = new Sheet(state.rows, state.measures * 4);
-      state.sheet?.setByArray([
-        [true, false, false, false, false, true, false, false, false, false],
-        [false, false, false, false, false, true, false, false, false, false],
-        [false, false, false, false, true, true, false, false, false, false],
-        [true, false, false, false, false, true, false, false, false, false],
-        [true, false, false, false, false, true, false, false, false, false],
-        [false, false, false, false, false, true, false, false, false, false],
-        [false, false, false, false, true, true, false, false, false, false],
-        [false, false, false, false, false, true, false, false, false, false],
-        [true, false, false, false, false, true, false, false, false, false],
-        [true, false, false, false, false, true, false, false, false, false],
-        [false, false, false, false, true, true, false, false, false, false],
-        [false, false, false, false, false, true, false, false, false, false],
-        [true, false, false, false, false, true, false, false, false, false],
-        [false, false, false, false, false, true, false, false, false, false],
-        [false, false, false, false, true, true, false, false, false, false],
-        [false, false, false, false, false, true, false, false, false, false],
-      ]);
+      if (!state.code)
+        state.sheet?.setByArray([
+          [true, false, false, false, false, true, false, false, false, false],
+          [false, false, false, false, false, true, false, false, false, false],
+          [false, false, false, false, true, true, false, false, false, false],
+          [true, false, false, false, false, true, false, false, false, false],
+          [true, false, false, false, false, true, false, false, false, false],
+          [false, false, false, false, false, true, false, false, false, false],
+          [false, false, false, false, true, true, false, false, false, false],
+          [false, false, false, false, false, true, false, false, false, false],
+          [true, false, false, false, false, true, false, false, false, false],
+          [true, false, false, false, false, true, false, false, false, false],
+          [false, false, false, false, true, true, false, false, false, false],
+          [false, false, false, false, false, true, false, false, false, false],
+          [true, false, false, false, false, true, false, false, false, false],
+          [false, false, false, false, false, true, false, false, false, false],
+          [false, false, false, false, true, true, false, false, false, false],
+          [false, false, false, false, false, true, false, false, false, false],
+        ]);
+      else state.sheet?.setByCode(state.code);
     },
     updateBpm({ commit }, bpm: number): void {
       commit("SET_BPM", bpm);
@@ -177,6 +191,9 @@ export const store = createStore<State>({
 
     toggleWhitelist({ commit }, name: string) {
       commit("TOGGLE_WHITELIST", name);
+    },
+    toggleModal({ commit }) {
+      commit("TOGGLE_MODAL");
     },
   },
   modules: {},
