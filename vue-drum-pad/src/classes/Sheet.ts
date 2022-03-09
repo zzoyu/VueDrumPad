@@ -4,6 +4,7 @@ import SoundManager from "./SoundManager";
 class Column extends Array<Beat> {
   constructor(height: number, beats?: boolean[]) {
     super(height);
+    console.log(beats);
     for (let i = 0; i < this.length; i++)
       this[i] = new Beat(beats?.[i] ?? false, SoundManager.getSoundById(i));
   }
@@ -74,6 +75,7 @@ export default class Sheet {
             this.row,
             parseInt(columns[k], 32)
               .toString(2)
+              .padStart(this.row, "0")
               .split("")
               .map((v) => (v === "1" ? true : false))
           )
