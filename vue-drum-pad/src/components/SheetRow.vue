@@ -3,6 +3,7 @@ import BaseButtonNote from "./BaseButtonNote.vue";
 import { computed } from "vue";
 import { useStore } from "vuex";
 import { key, AppState } from "@/store";
+import BaseButtonNoteHead from "./BaseButtonNoteHead.vue";
 
 const store = useStore(key);
 
@@ -20,11 +21,19 @@ const row = computed(() => {
   console.log(store.getters.sheet);
   return store.getters.sheet?.getRow?.(props.index);
 });
+
+const isKeyInWhiteList = computed(() => (name: string) => {
+  return store.getters.keyboardManager.isKeyInWhiteList(name);
+});
 </script>
 
 <template>
   <div class="row">
-    <div class="note_head">{{ index }}</div>
+    <base-button-note-head
+      :name="index.toString()"
+      :pressed="isKeyInWhiteList(index.toString())"
+      @update:record="(value:string)=>store.dispatch('toggleWhitelist', value)"
+    ></base-button-note-head>
     <base-button-note
       v-for="(note, i) in row"
       :key="`row_${props.index}_note_${i}`"

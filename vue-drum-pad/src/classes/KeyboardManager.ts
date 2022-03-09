@@ -8,7 +8,7 @@ interface InitializeData {
 export class KeyboardManager {
   private static _instance: KeyboardManager;
   public keyList: Array<Key> = [];
-  public whitelist: Array<number> = [];
+  public whitelist: Array<string> = [];
 
   recordCallback?: InitializeData["recordCallback"];
 
@@ -121,6 +121,18 @@ export class KeyboardManager {
 
   getKeyState(): Array<KeyState> {
     return this.keyList.map((value) => value.key.state);
+  }
+
+  isKeyInWhiteList(name: string) {
+    // if (this.whitelist.length === 0) return true;
+    if (this.whitelist.includes(name)) return true;
+    return false;
+  }
+
+  toggleWhitelist(name: string) {
+    if (this.whitelist.includes(name))
+      this.whitelist.splice(this.whitelist.indexOf(name), 1);
+    else this.whitelist.push(name);
   }
 }
 

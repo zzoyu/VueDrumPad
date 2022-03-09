@@ -80,6 +80,9 @@ export const store = createStore<State>({
     RECORD_INPUT(state, { keyId, currentIndex }) {
       state.sheet?.on(keyId, currentIndex);
     },
+    TOGGLE_WHITELIST(state, name) {
+      state.keyboardManager.toggleWhitelist(name);
+    },
   },
   actions: {
     async initialize({ state, commit, dispatch }) {
@@ -88,7 +91,11 @@ export const store = createStore<State>({
       state.keyboardManager.initialize({
         recordCallback: (keyId: number) => {
           if (state.state !== AppState.Recording) return false;
-          commit("RECORD_INPUT", { keyId, currentIndex: state.currentIndex });
+          if (
+            state.keyboardManager.whitelist.length === 0 ||
+            state.keyboardManager.isKeyInWhiteList(keyId.toString())
+          )
+            commit("RECORD_INPUT", { keyId, currentIndex: state.currentIndex });
         },
         specialKeys: [
           new SpecialKey(
@@ -166,6 +173,10 @@ export const store = createStore<State>({
     },
     setSheet({ state }, notes: Array<Array<boolean>>) {
       state.sheet?.setByArray(notes);
+    },
+
+    toggleWhitelist({ commit }, name: string) {
+      commit("TOGGLE_WHITELIST", name);
     },
   },
   modules: {},
