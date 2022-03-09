@@ -12,6 +12,14 @@ const audioFileList = [
   require("@/assets/sound/1up.wav"),
 ];
 
+interface WebkitAudioContext extends AudioContext {
+  createGainNode: () => GainNode;
+}
+interface Window extends globalThis.Window {
+  AudioContext: typeof AudioContext;
+  webkitAudioContext?: typeof AudioContext;
+}
+
 export class SoundManager {
   audioContext: AudioContext;
   soundList: Array<Sound> = [];
@@ -19,12 +27,17 @@ export class SoundManager {
   private static _instance: SoundManager;
 
   private constructor() {
-    // const AudioContext = (window?.AudioContext || window?.webkitAudioContext);
+    const _window: Window = window;
+    const AudioContext = _window?.AudioContext || _window?.webkitAudioContext;
+    if (!AudioContext) alert("WebAudioAPI를 지원하지 않는 브라우저입니다.");
+    console.log(AudioContext);
     this.audioContext = new AudioContext();
   }
 
   async initialize() {
-    const gainNode = this.audioContext.createGain();
+    const gainNode =
+      this.audioContext.createGain?.() ||
+      (<WebkitAudioContext>this.audioContext)?.createGainNode?.();
     const source = this.audioContext.createBufferSource();
 
     source.connect(gainNode);
@@ -60,6 +73,7 @@ export class SoundManager {
 
   audioPlay(id: number): void {
     this.getSoundById(id)?.play(this.audioContext);
+    // this.audioContext.resume?.();
   }
 }
 
