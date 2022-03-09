@@ -6,7 +6,7 @@ https://painstaking-ant.surge.sh/
 
 * * *
 
-Vue.js 3 typescript 습작입니다. [Web Audio API(https://developer.mozilla.org/ko/docs/Web/API/Web_Audio_API)]를 기반으로 비트를 조합/재생하는 애플리케이션입니다.
+Vue.js 3 typescript 습작입니다. [Web Audio API](https://developer.mozilla.org/ko/docs/Web/API/Web_Audio_API)를 기반으로 비트를 조합/재생하는 애플리케이션입니다.
 과거에 직접 HTML+바닐라 자바스크립트로 작업한 것을 포팅 및 일부 리팩터링 하였습니다.
 아직 모바일 대응 및 일부 기능들은 작업 중에 있습니다. iOS 기준, 무음 모드에서 재생되지 않습니다.
 
